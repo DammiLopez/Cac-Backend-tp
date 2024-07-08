@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+  mysql:
+    image: mysql:5
+    environment:
+      - MYSQL_DATABASE=cac_movies
+      - MYSQL_ROOT_PASSWORD=admin123
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - cac-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=admin123
+    ports:
+      - "8090:80"
+    depends_on:
+      - mysql
+    networks:
+      - cac-network
+
+networks:
+  cac-network:
+    driver: bridge
